@@ -183,6 +183,9 @@ Route::post('/admin/slots', [SlotController::class, 'store'])->name('admin.slots
 Route::delete('/admin/slots/{id}', [SlotController::class, 'destroy'])->name('admin.slots.destroy');
 
 Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->name('dashboard');
     Route::get('/registered-clients', [RegisteredClientController::class, 'index'])->name('clients');
 
     Route::get('/booking-requests', [AdminBookingController::class, 'index'])->name('bookings.index');
