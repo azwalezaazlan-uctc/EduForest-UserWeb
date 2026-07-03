@@ -21,18 +21,7 @@
 
     <div class="relative z-10 min-h-screen flex flex-col">
         
-        <header class="bg-[#2d5a43]/95 backdrop-blur-md text-white shadow-md sticky top-0 z-50">
-            <div class="max-w-7xl mx-auto px-8 py-4 flex items-center relative">
-                <a href="javascript:history.back()" class="w-10 h-10 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-all absolute left-8">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4 text-white">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </a>
-                <div class="w-full text-center">
-                    <h1 class="text-lg font-bold tracking-wide">Activities</h1>
-                </div>
-            </div>
-        </header>
+        @include('profile.partials.topbar')
 
         <main class="max-w-7xl mx-auto px-8 my-auto py-12 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center flex-1">
             
@@ -161,7 +150,7 @@
             updateDesktopSlider();
         }
 
-        setInterval(slideNext, 5000); // Auto-rotate perlahan setiap 5 saat
+        setInterval(slideNext, 5000);
         updateDesktopSlider();
     </script>
 </body>

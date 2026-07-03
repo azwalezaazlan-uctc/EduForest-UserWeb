@@ -14,26 +14,16 @@
 </head>
 <body class="bg-stone-100 min-h-screen flex flex-col antialiased">
 
-    <!-- Header / Nav Khas Mengikut image_9b2ec1.png & image_9b2f9b.png -->
-    <nav class="bg-[#2D5A27] text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center relative justify-center">
-            
-            <!-- Butang Kembali Bulat Mengikut Tepat Reka Bentuk image_9b2f9b.png -->
-            <a href="{{ route('dashboard') }}" class="absolute left-6 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </a>
+    @include('profile.partials.topbar')
 
-            <!-- Tajuk Utama -->
-            <h1 class="text-xl font-bold uppercase tracking-wider">CONTACT US</h1>
-        </div>
-    </nav>
+    <div class="max-w-xl w-full mx-auto px-6 pt-10 text-center">
+        <h1 class="text-xl font-bold uppercase tracking-wider text-stone-800">Contact Us</h1>
+    </div>
 
-    <!-- Kandungan Utama Mengikut Susunan Bersih image_9b3283.png -->
+    
     <main class="flex-grow max-w-xl w-full mx-auto px-6 py-12">
         
-        <!-- Info Hubungan Atas UCTC -->
+        
         <div class="text-center mb-10 text-stone-800">
             <h2 class="font-extrabold text-sm tracking-wide">
                 Pusat Transformasi Komuniti Universiti (UCTC)
@@ -44,10 +34,10 @@
             </div>
         </div>
 
-        <!-- Senarai Kad Kakitangan (Clear Line Style) -->
+        
         <div class="space-y-6">
 
-            <!-- Kad 1: DR. AQIL WONG -->
+            
             <div class="bg-white border border-stone-300 rounded-2xl p-6 shadow-xs">
                 <div class="border-b border-stone-400 pb-2 mb-3">
                     <h3 class="font-bold text-stone-900 text-lg tracking-wide uppercase">
@@ -62,7 +52,7 @@
                 </div>
             </div>
 
-            <!-- Kad 2: ENCIK MOHD ZAIHAM IZWAN -->
+            
             <div class="bg-white border border-stone-300 rounded-2xl p-6 shadow-xs">
                 <div class="border-b border-stone-400 pb-2 mb-3">
                     <h3 class="font-bold text-stone-900 text-lg tracking-wide uppercase">
@@ -77,7 +67,7 @@
                 </div>
             </div>
 
-            <!-- Kad 3: ENCIK AMIN -->
+            
             <div class="bg-white border border-stone-300 rounded-2xl p-6 shadow-xs">
                 <div class="border-b border-stone-400 pb-2 mb-3">
                     <h3 class="font-bold text-stone-900 text-lg tracking-wide uppercase">
@@ -95,7 +85,7 @@
         </div>
     </main>
 
-    <!-- Footer Ringkas -->
+    
     <footer class="bg-stone-200 text-center py-4 text-[11px] text-stone-400 border-t border-stone-300 mt-auto">
         &copy; {{ date('Y') }} EduForest UCTC UPSI.
     </footer>

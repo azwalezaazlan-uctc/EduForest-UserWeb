@@ -6,7 +6,7 @@
 
     <div class="card-premium" id="payments-sec">
         <h2 class="card-title">Payment Verification</h2>
-        <p class="card-subtitle">Semak resit pembayaran yuran komitmen dan sahkan transaksi tempahan pelanggan.</p>
+        <p class="card-subtitle">Check the commitment fee payment receipt and confirm the customer's booking transaction.</p>
 
         <div class="table-responsive">
             <table>
@@ -24,7 +24,7 @@
                         <tr>
                             <td>
                                 <div style="font-weight: 600; color: #0f172a;">{{ $payment->client_name ?? 'No Name' }}</div>
-                                <div style="font-size: 11px; color: #94a3b8; font-family:monospace; margin-top: 2px;">ID: {{ $payment->id }}</div>
+                                <div style="font-size: 11px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 2px;">ID: {{ $payment->id }}</div>
                             </td>
                             <td>
                                 <span class="badge-category" style="margin-bottom: 4px;">{{ $payment->selected_category ?? 'PUBLIC' }}</span>

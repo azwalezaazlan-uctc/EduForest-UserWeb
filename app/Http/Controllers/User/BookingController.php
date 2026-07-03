@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -16,21 +17,19 @@ class BookingController extends Controller
 
     public function store(Request $request)
     {
-        // (legacy) placeholder
+        
     }
 
     public function showConfirmation(Request $request)
     {
-        // ── 1. Package & Category ──────────────────────────────────────
+        
         $pIdInput  = $request->input('package_id');
         $pName     = strtoupper($request->input('package_name', 'PACKAGE B'));
         $pDays     = intval($request->input('package_days', 2));
         $category  = strtolower($request->input('category', 'public'));
         $pax       = intval($request->input('total_pax', 1));
 
-        // ── FIX: Resolve package ID dengan betul ──────────────────────
-        // Ambil HURUF TERAKHIR nama pakej ("PACKAGE A" → "A")
-        // str_contains() tidak boleh dipakai — "package" mengandungi 'a' dan 'c'!
+        
         $lastChar = strtoupper(trim(substr($pName, -1))); // → "A", "B", atau "C"
 
         if (intval($pIdInput) === 1 || $lastChar === 'A') {
@@ -40,18 +39,27 @@ class BookingController extends Controller
         } else {
             $packageIdDb = 2;
         }
-        // ─────────────────────────────────────────────────────────────
+        
 
-        // ── 2. Price by category — ikut supabase packages table ──────
-        $prices = [
-            1 => ['upsi'=>40,  'gov'=>50,  'government'=>50,  'international'=>36,  'public'=>60],
-            2 => ['upsi'=>70,  'gov'=>85,  'government'=>85,  'international'=>71,  'public'=>100],
-            3 => ['upsi'=>110, 'gov'=>130, 'government'=>130, 'international'=>91,  'public'=>150],
-        ];
-        $pPrice          = $prices[$packageIdDb][$category] ?? $prices[$packageIdDb]['public'];
-        $calculatedTotal = $pPrice * $pax;
+        
+        $packageRow = DB::table('packages')->where('id', $packageIdDb)->first();
 
-        // ── 3. Dates ──────────────────────────────────────────────────
+$priceColumn = match ($category) {
+    'upsi' => 'price_upsi',
+    'gov', 'government', 'government agency' => 'price_gov',
+    'international' => 'price_international',
+    default => 'price_public',
+};
+
+$pPrice = floatval($packageRow->{$priceColumn} ?? 0);
+
+if ($pPrice <= 0) {
+    $pPrice = floatval($request->input('price_per_pax', 0));
+}
+
+$calculatedTotal = $pPrice * $pax;
+
+        
         $checkInDate  = $request->input('booking_date');
         $checkOutDate = $request->input('checkout_date');
 
@@ -61,7 +69,7 @@ class BookingController extends Controller
             $checkOutDate = $d->format('Y-m-d');
         }
 
-        // ── 4. Upload PDF participant list → Supabase ─────────────────
+        
         $participantListUrl = null;
         if ($request->hasFile('participant_list_pdf')) {
             $file = $request->file('participant_list_pdf');
@@ -98,7 +106,7 @@ class BookingController extends Controller
             }
         }
 
-        // ── 5. Insert booking ─────────────────────────────────────────
+        
         $newUuid         = (string) Str::uuid();
         $referenceNumber = 'EDU' . rand(100000, 999999);
         $clientId        = Auth::check() ? Auth::id() : (string) Str::uuid();
@@ -117,9 +125,9 @@ class BookingController extends Controller
             'client_number'        => $request->input('client_number'),
             'client_email'         => $request->input('client_email'),
             'special_requests'     => $request->input('special_requests', '-'),
-            'participant_list_url' => $participantListUrl,
+            //'participant_list_url' => $participantListUrl,
             'total_amount'         => $calculatedTotal,
-            'status'               => 'pending',
+            //'status'               => 'pending',
             'reference_number'     => $referenceNumber,
             'created_at'           => now(),
         ]);
@@ -127,15 +135,12 @@ class BookingController extends Controller
         $bookingFromDb = DB::table('bookings')->where('id', $newUuid)->first();
         $bookingData   = (array) $bookingFromDb;
 
-        // Ambil image_url dari packages table
-        $packageRow = DB::table('packages')->where('id', $packageIdDb)->first();
 
-        // Tambah maklumat display yang tak disimpan dalam DB
+        
         $bookingData['package_name']  = $pName;
         $bookingData['package_label'] = $request->input('package_label', '2 Days 1 Night');
         $bookingData['price_per_pax'] = $pPrice;
         $bookingData['package_image'] = $packageRow->image_url ?? null;
 
-        return view('booking-confirmation', compact('bookingData'));
-    }
+return redirect()->route('payment.instruction', $referenceNumber);    }
 }

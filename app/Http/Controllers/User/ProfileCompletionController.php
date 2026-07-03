@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -9,11 +10,10 @@ use Illuminate\Support\Facades\Schema;
 
 class ProfileCompletionController extends Controller
 {
-    // Papar form isi profil
+    
     public function showForm()
     {
-        // PERTAHANAN TAMBAHAN: Kalau user dah ada profil dalam database,
-        // jangan bagi dia tengok form ni lagi, terus hantar ke dashboard!
+        
         $profileExists = DB::table('profiles')->where('id', Auth::id())->exists();
         
         if ($profileExists) {
@@ -23,7 +23,7 @@ class ProfileCompletionController extends Controller
         return view('auth.complete-profile');
     }
 
-    // Simpan data dari form ke Supabase
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -68,7 +68,7 @@ class ProfileCompletionController extends Controller
 
         DB::table('profiles')->insert($profileData);
 
-        // Selesai simpan, bawa ke dashboard dengan mesej kejayaan
+        
         return redirect()->route('dashboard')->with('success', 'Profil berjaya dilengkapkan!');
     }
 }

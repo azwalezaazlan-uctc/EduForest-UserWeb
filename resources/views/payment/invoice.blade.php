@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f3f4f6; }
+        body { font-family: 'Montserrat', sans-serif; background: #f3f4f6; }
         @media print {
             body { background: #fff; }
             .no-print { display: none !important; }
@@ -17,7 +17,7 @@
 </head>
 <body class="antialiased min-h-screen pb-16">
 
-    <!-- Header (screen only) -->
+    
     <header class="bg-[#2d5a43] text-white shadow-sm sticky top-0 z-50 no-print">
         <div class="w-full px-6 py-4 flex items-center relative min-h-[60px]">
             <a href="javascript:history.back()" class="absolute left-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-all">
@@ -33,10 +33,10 @@
 
     <main class="max-w-2xl mx-auto px-4 mt-6">
 
-        <!-- INVOICE CARD -->
+        
         <div class="invoice-card bg-white rounded-3xl p-8 shadow-sm border border-gray-100 space-y-6">
 
-            <!-- Invoice Header -->
+            
             <div class="flex justify-between items-start">
                 <div>
                     <img src="https://acufjzcdzmpwgyzwzgek.supabase.co/storage/v1/object/public/images/EDUFOREST%20LOGO/eduforest_logo-removebg-preview.png"
@@ -60,7 +60,7 @@
 
             <div class="border-t border-gray-100"></div>
 
-            <!-- Billed To -->
+            
             <div class="grid grid-cols-2 gap-6">
                 <div>
                     <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Billed To</p>
@@ -81,7 +81,7 @@
 
             <div class="border-t border-gray-100"></div>
 
-            <!-- Items Table -->
+            
             <div>
                 <table class="w-full text-sm">
                     <thead>
@@ -114,13 +114,13 @@
 
             <div class="border-t border-gray-100"></div>
 
-            <!-- Total -->
+            
             <div class="flex justify-between items-center px-1">
                 <span class="text-sm font-bold text-gray-400">Total Amount</span>
                 <span class="text-2xl font-black text-[#1e3522]">{{ $currency }} {{ number_format($total, 2) }}</span>
             </div>
 
-            <!-- Payment Ref -->
+            
             <div class="bg-[#f0f7f3] border border-[#a3c5af]/40 rounded-2xl p-4 space-y-2 text-xs">
                 <p class="font-black text-[#1e3522] uppercase tracking-wider text-[10px]">Payment Information</p>
                 <div class="flex justify-between">
@@ -142,12 +142,12 @@
             </div>
 
             <div class="text-center text-[10px] text-gray-400 pt-2">
-                Terima kasih kerana memilih Edu-Forest UCTC UPSI. Selamat menikmati program anda!
+                Thank you for choosing Edu-Forest UCTC UPSI. Enjoy your program!
             </div>
 
         </div>
 
-        <!-- Download / Print Buttons -->
+        
         <div class="mt-5 space-y-3 no-print">
             <button onclick="window.print()"
                 class="flex items-center justify-center gap-2 w-full bg-[#2d5a43] hover:bg-[#1e3522] text-white font-bold py-4 px-6 rounded-xl shadow-md active:scale-[0.99] transition-all tracking-wide text-sm cursor-pointer">

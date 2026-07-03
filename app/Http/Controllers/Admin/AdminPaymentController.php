@@ -7,9 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 class AdminPaymentController extends Controller
 {
-    /**
-     * Memaparkan semua senarai pembayaran pelanggan
-     */
     public function index()
     {
         $payments = DB::table('bookings')
@@ -19,9 +16,6 @@ class AdminPaymentController extends Controller
         return view('admin.payments.index', compact('payments'));
     }
 
-    /**
-     * Mengesahkan pembayaran pelanggan
-     */
     public function verifyPayment($id)
     {
         DB::table('bookings')

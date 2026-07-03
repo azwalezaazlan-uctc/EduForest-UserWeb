@@ -26,7 +26,6 @@ class SlotController extends Controller
             'reason' => 'nullable|string|max:255',
         ]);
 
-        // Semak jika tarikh tersebut sudah ada sekatan
         $exists = DB::table('booking_dates')
             ->where('booking_date', $request->booking_date)
             ->exists();
@@ -35,7 +34,6 @@ class SlotController extends Controller
             return redirect()->back()->with('error', 'Tarikh ini sudah mempunyai tetapan sekatan!');
         }
 
-        // Tentukan nilai string status berdasarkan input borang
         $statusValue = $request->block_type;
         if ($request->block_type === 'holiday' && !empty($request->reason)) {
             $statusValue = 'Blocked (' . $request->reason . ')';
@@ -43,9 +41,8 @@ class SlotController extends Controller
             $statusValue = 'fully_booked';
         }
 
-        // Simpan data ke table booking_dates
         DB::table('booking_dates')->insert([
-            'id' => \Illuminate\Support\Str::uuid(), // Memandangkan id jenis uuid
+            'id' => \Illuminate\Support\Str::uuid(), 
             'booking_date' => $request->booking_date,
             'status' => $statusValue,
             'created_at' => now(),

@@ -7,28 +7,56 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Montserrat', sans-serif; background-color: #f3f4f6; }
     </style>
 </head>
-<body class="antialiased min-h-screen pb-16">
-
-    <header class="bg-[#2d5a43] text-white shadow-sm sticky top-0 z-50">
-        <div class="w-full px-6 py-4 flex items-center relative min-h-[60px]">
-            <a href="javascript:history.back()" class="absolute left-6 w-10 h-10 flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-4 h-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5"/>
+@if (session('payment_success'))
+    <div class="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/35 px-5 backdrop-blur-sm">
+        <div class="w-full max-w-xl rounded-[32px] border border-white/70 bg-white p-8 text-center font-['Montserrat'] shadow-[0_24px_70px_rgba(47,125,79,0.20)]">
+            <div class="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#eef8f1] text-[#2f7d4f] shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
-            </a>
-            <div class="w-full text-center">
-                <h1 class="text-base font-bold tracking-wide inline-block">Payment</h1>
             </div>
+
+            <h2 class="mt-6 text-3xl font-extrabold text-[#163820]">
+                Payment Successful!
+            </h2>
+
+            <p class="mt-3 text-base leading-7 text-slate-500">
+                Your payment receipt has been successfully uploaded and is waiting for admin approval. Please Check My Bookings for confirmation
+            </p>
+
+            <div class="mt-7 rounded-3xl border border-amber-200 bg-amber-50 px-6 py-5 text-left">
+                <p class="text-xs font-extrabold uppercase tracking-[0.18em] text-slate-400">
+                    Status
+                </p>
+
+                <div class="mt-3 inline-flex items-center gap-2 rounded-full border border-amber-300 bg-white px-4 py-2 text-sm font-extrabold text-amber-700">
+                    <span class="h-2.5 w-2.5 rounded-full bg-amber-500"></span>
+                    Pending Admin Approval
+                </div>
+
+                <p class="mt-4 text-sm font-semibold leading-6 text-slate-500">
+                    Invoice will be available after admin approval.
+                </p>
+            </div>
+
+            <a href="{{ route('my-bookings') }}"
+                class="mt-7 inline-flex w-full items-center justify-center rounded-2xl bg-[#2f7d4f] px-6 py-4 text-sm font-extrabold text-white shadow-[0_14px_30px_rgba(47,125,79,0.22)] transition hover:bg-[#25663f]">
+                Back to My Bookings
+            </a>
         </div>
-    </header>
+    </div>
+@endif
+<body class="min-h-screen bg-[#eef8f1] antialiased overflow-x-hidden">
 
-    <main class="max-w-xl mx-auto px-4 mt-6">
-        <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 space-y-6">
+    @include('profile.partials.topbar')
 
-            <!-- Total Amount Card -->
+        <main class="mx-auto max-w-3xl px-5 py-10 lg:px-8">
+        <div class="bg-[#d2e7d6] rounded-2xl p-6 text-center">
+
+            
             <div class="bg-[#d2e7d6] rounded-2xl p-6 text-center">
                 <div class="text-[#2d5a43] flex items-center justify-center mb-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="w-7 h-7">
@@ -40,13 +68,13 @@
                     @if(strtolower($booking->selected_category ?? '') === 'international') USD @else RM @endif
                     {{ number_format($booking->total_amount ?? 0, 2) }}
                 </h2>
-                {{-- ✅ Show proper package name --}}
+                
                 <p class="text-[11px] text-[#2d5a43] font-black uppercase tracking-wider mt-1">
                     {{ $packageName }} · {{ $booking->total_pax ?? 1 }} Pax
                 </p>
             </div>
 
-            <!-- Bank Transfer Details -->
+            
             <div class="space-y-4">
                 <h3 class="text-sm font-bold text-gray-800 tracking-wide border-b border-gray-200 pb-2">Bank Transfer Details</h3>
                 <div class="space-y-3 text-xs text-gray-700">
@@ -81,13 +109,12 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 shrink-0 mt-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 1 1 1.056 1.056L10.5 14.25M12 7.5h.008v.008H12V7.5ZM21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                 </svg>
-                <p>Sila sertakan nombor rujukan semasa membuat pembayaran. Selepas bayar, muat naik resit anda untuk kelulusan admin.</p>
+                <p>Please include the reference number when making the payment. After paying, upload your receipt for admin approval.</p>
             </div>
 
             <div class="border-t border-dashed border-gray-200"></div>
 
-            <!-- Upload Receipt Form -->
-            {{-- ✅ Guna action yang betul --}}
+            
             <form action="{{ route('payment.submit', $booking->reference_number) }}" method="POST" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 <div>
@@ -110,7 +137,7 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-[#2d5a43] hover:bg-[#1e3522] text-white font-bold py-3.5 px-6 rounded-xl shadow-sm active:scale-[0.99] transition-all tracking-wide text-sm cursor-pointer">
+                    class="w-full rounded-xl bg-[#2f7d4f] px-6 py-3.5 text-sm font-extrabold tracking-wide text-white shadow-sm transition hover:bg-[#256f43] active:scale-[0.99]">
                     Submit Receipt
                 </button>
             </form>

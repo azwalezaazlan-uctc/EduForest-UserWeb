@@ -9,7 +9,7 @@ class Admin extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = 'admins'; // Membaca jadual admins di Supabase
+    protected $table = 'admins'; 
 
     protected $fillable = [
         'full_name',

@@ -12,18 +12,11 @@
 </head>
 <body class="bg-gradient-to-br from-stone-50 via-white to-emerald-50 antialiased">
 
-    <nav class="bg-[#2D5A27] text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center relative justify-center">
-            
-            <a href="{{ route('profile.show') }}" class="absolute left-6 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </a>
+    @include('profile.partials.topbar')
 
-            <h1 class="text-xl font-semibold tracking-wide text-white">Edit Profile</h1>
-        </div>
-    </nav>
+    <div class="max-w-xl w-full mx-auto px-6 pt-10 text-center">
+        <h1 class="text-xl font-semibold tracking-wide text-stone-800">Edit Profile</h1>
+    </div>
 
     <main class="max-w-xl w-full mx-auto px-6 py-10">
         
@@ -31,7 +24,7 @@
             
             <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('PUT') {{-- Menggunakan method PUT untuk kemas kini data --}}
+                @method('PUT') 
 
                 <div class="space-y-5">
                     
@@ -90,7 +83,7 @@
         document.getElementById('profile_image_input').onchange = evt => {
             const [file] = document.getElementById('profile_image_input').files;
             if (file) {
-                // Mengubah sumber imej preview kepada fail yang baru dipilih
+                
                 document.getElementById('profile-preview').src = URL.createObjectURL(file);
             }
         }

@@ -7,8 +7,7 @@
 <!-- ========================================== -->
 <!-- SIDEBAR KIRI (KEMAS & TIADA MASALAH TENGGELAM) -->
 <!-- ========================================== -->
-<aside id="mainSidebar" class="w-68 bg-[#355E3B] text-white fixed h-full top-0 left-0 z-40 flex flex-col justify-between shadow-xl border-r border-black/10 transition-transform duration-300 translate-x-0">
-    <div>
+<aside id="mainSidebar" class="fixed top-0 left-0 h-screen bg-[#355E3B] text-white z-40 flex flex-col justify-between shadow-xl border-r border-black/10 transition-transform duration-300" style="width: 260px;">
         <!-- 1. LOGO ATAS SEKALI -->
         <div class="h-28 flex items-center justify-center border-b border-white/10 px-4 bg-[#2d5a43]">
             <a href="{{ route('dashboard') }}" class="block">
@@ -69,13 +68,7 @@
                 <span>My Booking</span>
             </a>
             
-            <!-- EMERGENCI EMORY KEKAL 🚨 -->
-            <a href="{{ route('emergency') }}" class="flex items-center gap-3 py-3 px-4 rounded-xl text-amber-300 hover:bg-white/10 transition text-xs font-bold tracking-wide uppercase animate-pulse">
-                <span class="text-sm">🚨</span>
-                <span>SOS Call</span>
-            </a>
-        </nav>
-    </div>
+            
 
     <!-- Bahagian bawah kosong sepenuhnya supaya selamat dan kemas -->
     <div class="p-4 mb-2"></div>

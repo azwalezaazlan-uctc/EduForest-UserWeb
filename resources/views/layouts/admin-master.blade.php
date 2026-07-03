@@ -10,44 +10,103 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        * { box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
 
-        body { background-color: #ffffff; margin: 0; padding: 0; color: #334155; height: 100vh; overflow: hidden; }
+        body { background-color: #eef8f1; margin: 0; padding: 0; color: #334155; height: 100vh; overflow: hidden; }
 
         .dashboard-container { display: flex; height: 100vh; width: 100vw; }
 
-        .left-column { width: 18rem; display: flex; flex-direction: column; background-color: #ffffff; height: 100%; }
+        .left-column {
+        width: 18rem;
+        display: flex;
+        flex-direction: column;
+        background-color: #c9ead6;
+        height: 100%;
 
+}
         .logo-area {
-            height: 75px;
-            display: flex;
-            align-items: center;
-            padding-left: 2rem;
-            padding-right: 1.5rem;
-            background-color: #ffffff;
-        }
+        height: 110px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1.5rem 1rem 0.75rem;
+        background-color: #c9ead6;
+}
 
         .sidebar-premium {
-            background-color: #046307;
-            color: #fff;
-            flex-direction: column;
-            display: flex;
-            flex: 1;
-            border-top-right-radius: 2.5rem;
-            padding: 2rem 1rem;
-            justify-content: space-between;
-            overflow-y: auto;
-        }
+    background-color: #c9ead6;
+    color: #20334a;
+    flex-direction: column;
+    display: flex;
+    flex: 1;
+    border-radius: 0rem;
+    padding: 2rem 1rem;
+    justify-content: space-between;
+    overflow-y: auto;
+    border: 1px solid rgba(255,255,255,0.65);
+    box-shadow: 0 24px 70px rgba(47,125,79,0.16);
+}
 
-        .nav-container { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
-        .nav-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.875rem 1.25rem; color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.9rem; font-weight: 500; border-radius: 0.75rem; transition: all 0.2s ease; cursor: pointer; }
-        .nav-item:hover, .nav-item.active { background: rgba(255, 255, 255, 0.15); color: #fff; font-weight: 600; transform: translateX(4px); }
-        .nav-item i { width: 1.1rem; text-align: center; }
+.nav-container { display: flex; flex-direction: column; gap: 0.5rem; width: 100%; }
 
-        .logout-container { padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); margin-top: 1rem; }
-        .logout-btn { width: 100%; display: flex; align-items: center; gap: 0.65rem; text-align: left; background: transparent; border: none; color: rgba(255,255,255,0.6); font-size: 0.9rem; font-weight: 500; cursor: pointer; padding: 0.75rem 1.25rem; border-radius: 0.75rem; transition: all 0.2s; }
-        .logout-btn:hover { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.875rem 1.25rem;
+    color: #20334a;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border-radius: 999px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    letter-spacing: 0.01em;
+}
 
+.nav-item:hover,
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.78);
+    color: #0f172a;
+    font-weight: 800;
+    transform: translateX(4px);
+    box-shadow: 0 10px 26px rgba(47,125,79,0.13);
+}
+
+.nav-item i {
+    width: 1.1rem;
+    text-align: center;
+    color: #2f7d4f;
+}
+
+.logout-container {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(47,125,79,0.14);
+    margin-top: 1rem;
+}
+
+.logout-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-align: left;
+    background: rgba(255,255,255,0.58);
+    border: none;
+    color: #20334a;
+    font-size: 0.9rem;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0.75rem 1.25rem;
+    border-radius: 999px;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: #ffffff;
+    color: #b91c1c;
+    box-shadow: 0 10px 26px rgba(47,125,79,0.13);
+}
         .right-column { flex: 1; display: flex; flex-direction: column; height: 100%; overflow: hidden; }
 
         .header-premium {
@@ -85,7 +144,7 @@
 
         .table-responsive { overflow-x: auto; border-radius: 1rem; border: 1px solid #e2e8f0; }
         table { width: 100%; border-collapse: collapse; text-align: left; background: #fff; font-size: 0.9rem; }
-        th { background: #f8fafc; color: #475569; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 1rem 1.25rem; border-bottom: 1px solid #e2e8f0; }
+        th { background: #f8fafc; color: #475569; font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 1rem 1.25rem; }
         td { padding: 1.25rem; border-bottom: 1px solid #f1f5f9; color: #475569; vertical-align: middle; }
 
         .form-group { margin-bottom: 1rem; }
@@ -129,12 +188,12 @@
             <div class="logo-area">
                 <img src="https://acufjzcdzmpwgyzwzgek.supabase.co/storage/v1/object/public/images/EDUFOREST%20LOGO/eduforest_outline.png"
                     alt="Edu-Forest Logo"
-                    style="height: 100px; width: auto; object-fit: contain;">
+                    style="height: 180px; width: auto; object-fit: contain;">
             </div>
 
             <div class="sidebar-premium">
                 <nav class="nav-container">
-                    <a href="{{ route('dashboard') }}" class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span>
                     </a>
                     <a href="{{ route('admin.slots.index') }}" class="nav-item {{ request()->routeIs('admin.slots.*') ? 'active' : '' }}">
@@ -149,13 +208,13 @@
                     <a href="{{ route('admin.payments.index') }}" class="nav-item {{ request()->routeIs('admin.payments.*') ? 'active' : '' }}">
                         <i class="fa-solid fa-receipt"></i> <span>Payment Verification</span>
                     </a>
-                    <a href="{{ route('profile.edit') }}" class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                    <a href="{{ route('admin.account-setting') }}" class="nav-item {{ request()->routeIs('admin.account-setting') ? 'active' : '' }}">
                         <i class="fa-solid fa-gear"></i> <span>Account Setting</span>
                     </a>
                 </nav>
 
                 <div class="logout-container">
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" action="{{ route('admin.logout') }}">
                         @csrf
                         <button type="submit" class="logout-btn">
                             <i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span>
@@ -168,7 +227,7 @@
         <div class="right-column">
             <header class="header-premium">
                 <h1 class="header-title">
-                    @yield('page-title', 'Welcome back')@if(!View::hasSection('page-title')), <span class="header-user">{{ Auth::user()->full_name ?? session('admin_name', 'Admin') }}</span>@endif
+                    @yield('page-title', 'Welcome back, Admin')@if(!View::hasSection('page-title')), <span class="header-user">{{ Auth::user()->full_name ?? session('admin_name', 'Admin') }}</span>@endif
                 </h1>
                 <span class="header-date">{{ now()->format('l, d F Y') }}</span>
             </header>

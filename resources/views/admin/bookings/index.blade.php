@@ -6,7 +6,7 @@
 
     <div class="card-premium" id="bookings-sec">
         <h2 class="card-title">Booking Requests</h2>
-        <p class="card-subtitle">Semak dan urus permohonan tempahan yang diterima daripada pelanggan Edu-Forest.</p>
+        <p class="card-subtitle">Review and manage booking requests received from Edu-Forest customers.</p>
 
         <div class="table-responsive">
             <table>
@@ -24,7 +24,7 @@
                         <tr>
                             <td>
                                 <div style="font-weight: 600; color: #0f172a;">{{ $booking->client_name ?? 'No Name' }}</div>
-                                <div style="font-size: 11px; color: #94a3b8; font-family:monospace; margin-top: 2px;">ID: {{ $booking->id }}</div>
+                                <div style="font-size: 11px; color: #94a3b8; font-family: 'Montserrat'; margin-top: 2px;">ID: {{ $booking->id }}</div>
                             </td>
                             <td>
                                 <span class="badge-category" style="margin-bottom: 4px;">{{ $booking->selected_category ?? 'PUBLIC' }}</span>

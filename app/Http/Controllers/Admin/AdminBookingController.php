@@ -8,9 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class AdminBookingController extends Controller
 {
-    /**
-     * Senarai semua permohonan tempahan (Booking Requests)
-     */
+    
     public function index()
     {
         $bookings = DB::table('bookings')
@@ -26,9 +24,7 @@ class AdminBookingController extends Controller
         return view('admin.bookings.index', compact('bookings'));
     }
 
-    /**
-     * Papar butiran satu permohonan tempahan
-     */
+    
     public function show($id)
     {
         $booking = DB::table('bookings')->where('id', $id)->first();
@@ -38,9 +34,6 @@ class AdminBookingController extends Controller
         return view('admin.bookings.show', compact('booking'));
     }
 
-    /**
-     * Kemaskini status tempahan (approve / reject)
-     */
     public function updateStatus(Request $request, $id)
     {
         $request->validate([

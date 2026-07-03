@@ -12,7 +12,6 @@
         </span>
     </div>
 
-    {{-- Maklumat Klien --}}
     <div style="margin-bottom: 2rem;">
         <h3 style="color: #046307; margin-bottom: 1rem;">👤 Maklumat Pelanggan</h3>
         <table style="width: 100%; border-collapse: collapse;">
@@ -35,7 +34,6 @@
         </table>
     </div>
 
-    {{-- Maklumat Slot & Tarikh --}}
     <div style="margin-bottom: 2rem;">
         <h3 style="color: #046307; margin-bottom: 1rem;">📅 Butiran Tarikh & Pax</h3>
         <table style="width: 100%; border-collapse: collapse;">
@@ -54,27 +52,25 @@
         </table>
     </div>
 
-    {{-- Bahagian Lampiran Dokumen PDF Senarai Nama --}}
     <div style="background: #f8fafc; padding: 1.5rem; border-radius: 8px; border: 1px dashed #cbd5e1;">
         <h4 style="margin-top: 0; margin-bottom: 0.5rem; color: #334155;">📄 Dokumen Lampiran Klien</h4>
         <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Klien berkumpulan diwajibkan memuat naik senarai nama penuh ahli yang menyertai.</p>
         
         @if(!empty($booking->participant_list_path))
-            {{-- Butang untuk buka PDF di tab baru jika ada data path --}}
+
             <a href="{{ $booking->participant_list_path }}" target="_blank" 
             style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: #046307; color: #fff; text-decoration: none; border-radius: 6px; font-weight: 600; transition: background 0.2s;"
             onmouseover="this.style.background='#034d05'" onmouseout="this.style.background='#046307'">
                 👁️ Lihat & Muat Turun Senarai Peserta (PDF)
             </a>
         @else
-            {{-- Keadaan jika path kosong/null --}}
+
             <div style="color: #94a3b8; font-style: italic; font-size: 0.9rem;">
                 ⚠️ Tiada dokumen PDF dilampirkan oleh klien untuk tempahan ini.
             </div>
         @endif
     </div>
 
-    {{-- Butang Kembali --}}
     <div style="margin-top: 2rem;">
         <a href="{{ route('admin.bookings.index') }}" style="color: #64748b; text-decoration: none; font-size: 0.9rem;">← Kembali ke Senarai Permohonan</a>
     </div>

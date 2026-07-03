@@ -10,7 +10,7 @@
         body {
             font-family: 'Montserrat', sans-serif;
         }
-        /* Mengawal animasi bukaan dropdown */
+        
         .faq-content {
             max-height: 0;
             overflow: hidden;
@@ -21,7 +21,7 @@
             padding-top: 12px;
             padding-bottom: 16px;
         }
-        /* Tukar warna soalan kepada hijau tulen bila aktif mengikut image_9c8c76.png */
+        
         .faq-item.active .faq-title {
             color: #2D5A27;
         }
@@ -32,26 +32,16 @@
 </head>
 <body class="bg-white antialiased">
 
-    <!-- 🟢 Header / Nav Hijau Pekat & Butang Kembali Bulat Konsisten -->
-    <nav class="bg-[#2D5A27] text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center relative justify-center">
-            
-            <!-- Butang Kembali Bulat Konsisten Sebagaimana Diminta -->
-            <a href="{{ route('dashboard') }}" class="absolute left-6 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/25 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="w-5 h-5 text-white">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                </svg>
-            </a>
+    @include('profile.partials.topbar')
 
-            <!-- Tajuk Tepat Format "Help and Support" -->
-            <h1 class="text-xl font-semibold tracking-wide text-white">Help and Support</h1>
-        </div>
-    </nav>
+    <div class="max-w-xl w-full mx-auto px-6 pt-10 text-center">
+        <h1 class="text-xl font-semibold tracking-wide text-stone-800">Help and Support</h1>
+    </div>
 
-    <!-- Kandungan Utama FAQ Bersih Mengikut image_9c8c76.png -->
+    
     <main class="max-w-xl w-full mx-auto px-6 py-10">
         
-        <!-- Bar Carian Bersih -->
+        
         <div class="relative mb-8">
             <span class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-stone-400">
@@ -61,10 +51,10 @@
             <input type="text" id="faqSearch" placeholder="Search..." class="w-full bg-white border border-stone-200 rounded-2xl py-3.5 pl-12 pr-4 text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:border-stone-400 transition shadow-xs">
         </div>
 
-        <!-- Senarai Dropdown / Accordion FAQ Tanpa Emoji -->
+        
         <div class="divide-y divide-stone-100">
 
-            <!-- Soalan 1 -->
+            
             <div class="faq-item py-4">
                 <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left cursor-pointer group">
                     <span class="faq-title font-bold text-stone-900 text-[15px] tracking-wide transition-colors duration-200">How do I book an activity or campsite?</span>
@@ -77,7 +67,7 @@
                 </div>
             </div>
 
-            <!-- Soalan 2 -->
+            
             <div class="faq-item py-4">
                 <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left cursor-pointer group">
                     <span class="faq-title font-bold text-stone-900 text-[15px] tracking-wide transition-colors duration-200">Can I get a refund if I cancel?</span>
@@ -90,7 +80,7 @@
                 </div>
             </div>
 
-            <!-- Soalan 3 -->
+            
             <div class="faq-item py-4">
                 <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left cursor-pointer group">
                     <span class="faq-title font-bold text-stone-900 text-[15px] tracking-wide transition-colors duration-200">My payment went through but my booking is still "Pending"?</span>
@@ -103,7 +93,7 @@
                 </div>
             </div>
 
-            <!-- Soalan 4 -->
+            
             <div class="faq-item py-4">
                 <button type="button" onclick="toggleFaq(this)" class="w-full flex items-center justify-between text-left cursor-pointer group">
                     <span class="faq-title font-bold text-stone-900 text-[15px] tracking-wide transition-colors duration-200">Are outside food and drinks allowed?</span>
@@ -119,7 +109,7 @@
         </div>
     </main>
 
-    <!-- JavaScript Dropdown & Carian -->
+    
     <script>
         function toggleFaq(button) {
             const currentItem = button.parentElement;
