@@ -16,6 +16,21 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ActivityController::class, 'index'])->name('homepage');
+Route::get('/__debug-env-check-9f3k', function () {
+    $url = env('SUPABASE_URL');
+    $key = env('SUPABASE_KEY');
+    $serviceKey = env('SUPABASE_SERVICE_ROLE_KEY');
+
+    return response()->json([
+        'SUPABASE_URL_raw' => $url,
+        'SUPABASE_URL_length' => $url ? strlen($url) : 0,
+        'SUPABASE_KEY_is_set' => !empty($key),
+        'SUPABASE_KEY_length' => $key ? strlen($key) : 0,
+        'SUPABASE_SERVICE_ROLE_KEY_is_set' => !empty($serviceKey),
+        'APP_ENV' => env('APP_ENV'),
+        'APP_URL' => env('APP_URL'),
+    ]);
+});
 
 Route::get('/home', function () {
     return redirect()->route('booking.categories');
@@ -131,7 +146,19 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+$checkAdminLogin = function () {
+    if (! session('admin_logged_in')) {
+        return redirect()->route('admin.login');
+    }
+
+    return null;
+};
+
 Route::get('/admin/login', function () {
+    if (session('admin_logged_in')) {
+        return redirect()->route('admin.dashboard');
+    }
+
     return view('admin.login');
 })->name('admin.login');
 
@@ -151,10 +178,12 @@ Route::post('/admin/login', function (Request $request) {
 
     $request->session()->regenerate();
 
-    $request->session()->put('admin_logged_in', true);
-    $request->session()->put('admin_id', $admin->id);
-    $request->session()->put('admin_email', $admin->email);
-    $request->session()->put('admin_name', $admin->full_name ?? 'Admin');
+    session([
+        'admin_logged_in' => true,
+        'admin_id' => $admin->id,
+        'admin_email' => $admin->email,
+        'admin_name' => $admin->full_name ?? 'Admin',
+    ]);
 
     return redirect()->route('admin.dashboard');
 })->name('admin.login.submit');
@@ -167,104 +196,162 @@ Route::post('/admin/logout', function (Request $request) {
         'admin_name',
     ]);
 
-    return redirect()->route('admin.login');
-})->name('admin.logout');
-
-Route::post('/admin/logout', function (Request $request) {
-    $request->session()->forget([
-        'admin_logged_in',
-        'admin_id',
-        'admin_email',
-        'admin_name',
-    ]);
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
     return redirect()->route('admin.login');
 })->name('admin.logout');
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/dashboard', function () {
-    if (! session('admin_logged_in')) {
-        return redirect()->route('admin.login');
-    }
+Route::prefix('admin')->name('admin.')->group(function () use ($checkAdminLogin) {
+    Route::get('/dashboard', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
 
-    $totalClients = DB::table('users')->count();
+        $totalClients = DB::table('users')->count();
 
-    $pendingBookings = DB::table('bookings')
-        ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
-        ->where(function ($query) {
-            $query->whereNull('payments.status')
-                ->orWhere('payments.status', 'pending');
-        })
-        ->count();
+        $pendingBookings = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->where(function ($query) {
+                $query->whereNull('payments.status')
+                    ->orWhere('payments.status', 'pending');
+            })
+            ->count();
 
-    $pendingPayments = DB::table('payments')
-        ->where('status', 'pending')
-        ->count();
+        $pendingPayments = DB::table('payments')
+            ->where('status', 'pending')
+            ->count();
 
-    $blockedDatesCount = DB::table('booking_dates')
-        ->where('status', '!=', 'fully_booked')
-        ->count();
+        $blockedDatesCount = DB::table('booking_dates')
+            ->where('status', '!=', 'fully_booked')
+            ->count();
 
-    $recentBookings = DB::table('bookings')
-        ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
-        ->leftJoin('packages', 'bookings.package_id', '=', 'packages.id')
-        ->select(
-            'bookings.*',
-            'payments.status as payment_status',
-            'packages.name as package_name'
-        )
-        ->orderBy('bookings.created_at', 'desc')
-        ->limit(5)
-        ->get();
+        $recentBookings = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->leftJoin('packages', 'bookings.package_id', '=', 'packages.id')
+            ->select(
+                'bookings.*',
+                'payments.status as payment_status',
+                'packages.name as package_name'
+            )
+            ->orderBy('bookings.created_at', 'desc')
+            ->limit(5)
+            ->get();
 
-    $calendarBookings = DB::table('bookings')
-        ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
-        ->leftJoin('packages', 'bookings.package_id', '=', 'packages.id')
-        ->select(
-            'bookings.id',
-            'bookings.check_in_date',
-            'bookings.check_out_date',
-            'bookings.total_pax',
-            'bookings.package_id',
-            'bookings.selected_category',
-            'payments.status as payment_status',
-            'packages.name as package_name'
-        )
-        ->where('payments.status', 'approved')
-        ->get();
+        $calendarBookings = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->leftJoin('packages', 'bookings.package_id', '=', 'packages.id')
+            ->select(
+                'bookings.id',
+                'bookings.check_in_date',
+                'bookings.check_out_date',
+                'bookings.total_pax',
+                'bookings.package_id',
+                'bookings.selected_category',
+                'payments.status as payment_status',
+                'packages.name as package_name'
+            )
+            ->where('payments.status', 'approved')
+            ->get();
 
-    $calendarRestrictions = DB::table('booking_dates')
-        ->where('status', '!=', 'fully_booked')
-        ->get();
+        $calendarRestrictions = DB::table('booking_dates')
+            ->where('status', '!=', 'fully_booked')
+            ->get();
 
-    return view('admin.dashboard', compact(
-        'totalClients',
-        'pendingBookings',
-        'pendingPayments',
-        'blockedDatesCount',
-        'recentBookings',
-        'calendarBookings',
-        'calendarRestrictions'
-    ));
-})->name('dashboard');
+        return view('admin.dashboard', compact(
+            'totalClients',
+            'pendingBookings',
+            'pendingPayments',
+            'blockedDatesCount',
+            'recentBookings',
+            'calendarBookings',
+            'calendarRestrictions'
+        ));
+    })->name('dashboard');
 
-    Route::get('/registered-clients', [RegisteredClientController::class, 'index'])->name('clients');
+    Route::get('/registered-clients', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
 
-    Route::get('/booking-requests', [AdminBookingController::class, 'index'])->name('bookings.index');
-    Route::get('/booking-requests/{id}', [AdminBookingController::class, 'show'])->name('bookings.show');
-    Route::patch('/bookings/{booking}/status', [AdminBookingController::class, 'updateStatus'])->name('bookings.updateStatus');
+        return app(RegisteredClientController::class)->index();
+    })->name('clients');
 
-    Route::get('/payments', [AdminPaymentController::class, 'index'])->name('payments.index');
-    Route::patch('/payments/{booking}/verify', [AdminPaymentController::class, 'verifyPayment'])->name('payments.verify');
-    Route::post('/payments/{payment}/invoice', [AdminPaymentController::class, 'uploadInvoice'])->name('payments.uploadInvoice');
+    Route::get('/booking-requests', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
 
-    Route::get('/slots', [SlotController::class, 'index'])->name('slots.index');
-    Route::post('/slots', [SlotController::class, 'store'])->name('slots.store');
-    Route::delete('/slots/{id}', [SlotController::class, 'destroy'])->name('slots.destroy');
+        return app(AdminBookingController::class)->index();
+    })->name('bookings.index');
 
-    Route::get('/account-setting', function () {
-        if (! session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+    Route::get('/booking-requests/{id}', function ($id) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(AdminBookingController::class)->show($id);
+    })->name('bookings.show');
+
+    Route::patch('/bookings/{booking}/status', function (Request $request, $booking) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(AdminBookingController::class)->updateStatus($request, $booking);
+    })->name('bookings.updateStatus');
+
+    Route::get('/payments', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(AdminPaymentController::class)->index();
+    })->name('payments.index');
+
+    Route::patch('/payments/{booking}/verify', function ($booking) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(AdminPaymentController::class)->verifyPayment($booking);
+    })->name('payments.verify');
+
+    Route::post('/payments/{payment}/invoice', function (Request $request, $payment) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(AdminPaymentController::class)->uploadInvoice($request, $payment);
+    })->name('payments.uploadInvoice');
+
+    Route::get('/slots', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(SlotController::class)->index();
+    })->name('slots.index');
+
+    Route::post('/slots', function (Request $request) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(SlotController::class)->store($request);
+    })->name('slots.store');
+
+    Route::delete('/slots/{id}', function ($id) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
+        }
+
+        return app(SlotController::class)->destroy($id);
+    })->name('slots.destroy');
+
+    Route::get('/account-setting', function () use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
         }
 
         $admin = DB::table('admins')->where('id', session('admin_id'))->first();
@@ -272,9 +359,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         return view('admin.account-setting', compact('admin'));
     })->name('account-setting');
 
-    Route::put('/account-setting/password', function (Request $request) {
-        if (! session('admin_logged_in')) {
-            return redirect()->route('admin.login');
+    Route::put('/account-setting/password', function (Request $request) use ($checkAdminLogin) {
+        if ($redirect = $checkAdminLogin()) {
+            return $redirect;
         }
 
         $request->validate([
