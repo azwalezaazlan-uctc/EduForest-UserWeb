@@ -505,14 +505,14 @@
     </script>
 
 <script>
-    function openProjectInfo() {
+    function openProjectInfoModal() {
         const modal = document.getElementById('projectInfoModal');
         modal.classList.remove('hidden');
         modal.classList.add('flex');
         document.body.style.overflow = 'hidden';
     }
 
-    function closeProjectInfo() {
+    function closeProjectInfoModal() {
         const modal = document.getElementById('projectInfoModal');
         modal.classList.add('hidden');
         modal.classList.remove('flex');
@@ -521,13 +521,13 @@
 
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
-            closeProjectInfo();
+            closeProjectInfoModal();
         }
     });
 
     document.getElementById('projectInfoModal').addEventListener('click', function(event) {
         if (event.target === this) {
-            closeProjectInfo();
+            closeProjectInfoModal();
         }
     });
 </script>
